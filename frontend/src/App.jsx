@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 // import AdminDashboard from "./pages/AdminDashboard";
 // import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -15,7 +16,7 @@ export default function App() {
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/login" />} />
 
-        Public routes
+        {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -30,14 +31,14 @@ export default function App() {
         />
 
         {/* Admin route */}
-        {/* <Route
+        <Route
           path="/admin"
           element={
             <ProtectedRoute admin>
               <AdminDashboard />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
         {/* Profile */}
         {/* <Route
@@ -47,7 +48,7 @@ export default function App() {
               <Profile />
             </ProtectedRoute>
           }
-        />  */}
+        /> */}
       </Routes>
     </BrowserRouter>
   );

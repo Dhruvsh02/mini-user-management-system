@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import SignupSerializer, LoginSerializer, CurrentUserSerializer
+from .serializers import UpdateProfileSerializer, ChangePasswordSerializer
 
 
 class SignupView(APIView):
@@ -50,3 +51,44 @@ class CurrentUserView(APIView):
     def get(self, request):
         serializer = CurrentUserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class UpdateProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(slef, request):
+        serializer = UpdateProfileSerializer(
+            request.user,
+            data=request.data,
+            partial=True,
+            context={"request": request},
+        )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "message": "profile updated sucessfully"
+                },
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class ChangepasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        serializer = ChangePasswordSerializer(
+            data = request.data,
+            context = {"request": request}
+        )
+        if serializer.is_valid():
+            user = request.user
+            user.set_password(serializer.validated_data["new_password"])
+            user.save()
+            return Response(
+                {
+                    "message": "Password changed successfully."
+                },
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

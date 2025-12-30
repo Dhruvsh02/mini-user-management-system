@@ -55,3 +55,33 @@ class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "email", "full_name", "role", "is_active", "created_at")
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("full_name", "email")
+
+    def validate_email(self, value):
+        user = self.context["request"].user
+        if User.objects.exclude(id=user.id).filter(email=value).exists():
+            raise serializers.ValidationError("Email is already in use.")
+        return value
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        user = self.context["request"].user
+
+        if not user.check_password(data["old_password"]):
+            raise serializers.ValidationError({"old_password": "Incorrect old password."})
+        
+        if len(data["new_password"]) < 8:
+            raise serializers.ValidationError({"new_password": "Password must be at least 8 characters long."})
+        if not re.search(r"[A-Z]", data["new_password"]):
+            raise serializers.ValidationError({"new_password": "Password must contain at least one uppercase letter."})
+        if not re.search(r"[0-9]", data["new_password"]):
+            raise serializers.ValidationError({"new_password": "Password must contain at least one digit."})
+        
+        return data 

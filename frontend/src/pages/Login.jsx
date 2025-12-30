@@ -9,13 +9,13 @@ export default function Login() {
         email: "",
         password: ""
     });
-    const [error, serError] = useState("");
+    const [error, setError] = useState();
     const handleChange = (e) => {
         setform({ ...form, [e.target.name]: e.target.value });
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        serError("");
+        setError("");
 
         try{
             const res = await API.post("/auth/login/", form);
@@ -29,8 +29,8 @@ export default function Login() {
             } else {
                 navigate("/dashboard");
             }
-        } catch (err) {
-            setError("Invalid credentials. Please try again.");
+        } catch(err) {
+          setError("Invalid credentials. Please try again.");
         }
     };
 

@@ -4,6 +4,7 @@ import {
   activateUser,
   deactivateUser
 } from "../services/adminApi";
+import { logout } from "../utils/logout";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -170,7 +171,7 @@ export default function AdminDashboard() {
                               }`}
                             >
                         Confirm
-                    </button>
+                        </button>
                    </div>
                 </div>
             </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import GlassCard from "../components/GlassCard";
+import { logout } from "../utils/logout";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -23,11 +24,10 @@ export default function Dashboard() {
     
     fetchUser();
   }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-  };
+//   const handleLogout = () => {
+//     localStorage.clear();
+//     navigate("/login");
+//   };
 
   if (loading) {
     return (
@@ -89,7 +89,8 @@ export default function Dashboard() {
               Change Password
             </button>
             <button
-              onClick={handleLogout}
+              onClick={logout}
+              
               className="w-full py-2 rounded-xl bg-red-500/80 text-white font-semibold hover:bg-red-600 transition"
             >
               Logout

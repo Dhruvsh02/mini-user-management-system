@@ -3,10 +3,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
-// import AdminDashboard from "./pages/AdminDashboard";
-// import Profile from "./pages/Profile";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import ProtectedLayout from "./layouts/ProtectedLayout";
 
 
 export default function App() {
@@ -25,7 +25,9 @@ export default function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <ProtectedLayout>
+                <Dashboard />
+              </ProtectedLayout>
             </ProtectedRoute>
           }
         />
@@ -34,8 +36,10 @@ export default function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute admin>
-              <AdminDashboard />
+            <ProtectedRoute role="admin">
+              <ProtectedLayout>
+                <AdminDashboard />
+              </ProtectedLayout>
             </ProtectedRoute>
           }
         />
@@ -45,7 +49,9 @@ export default function App() {
           path="/profile"
           element={
             <ProtectedRoute>
+              <ProtectedLayout>
               <Profile />
+              </ProtectedLayout>
             </ProtectedRoute>
           }
         />
@@ -54,7 +60,9 @@ export default function App() {
           path="/change-password"
           element={
             <ProtectedRoute>
+              <ProtectedLayout>
               <ChangePassword />
+              </ProtectedLayout>
             </ProtectedRoute>
           }
         />

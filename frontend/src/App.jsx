@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import ChangePassword from "./pages/ChangePassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ProtectedLayout from "./layouts/ProtectedLayout";
+import RootRedirect from "./components/RootRedirect";
 
 
 export default function App() {
@@ -14,8 +15,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/login" />} />
-
+        <Route path="/" element={<RootRedirect />} />
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

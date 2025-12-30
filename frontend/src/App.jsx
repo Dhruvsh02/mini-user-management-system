@@ -1,6 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+// import AdminDashboard from "./pages/AdminDashboard";
+// import Profile from "./pages/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 
 
 export default function App() {
@@ -25,24 +30,24 @@ export default function App() {
         />
 
         {/* Admin route */}
-        <Route
+        {/* <Route
           path="/admin"
           element={
             <ProtectedRoute admin>
               <AdminDashboard />
             </ProtectedRoute>
           }
-        />
+        /> */}
 
         {/* Profile */}
-        <Route
+        {/* <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           }
-        />
+        />  */}
       </Routes>
     </BrowserRouter>
   );

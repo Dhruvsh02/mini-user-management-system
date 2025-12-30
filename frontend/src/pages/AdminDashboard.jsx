@@ -5,6 +5,8 @@ import {
   deactivateUser
 } from "../services/adminApi";
 import { logout } from "../utils/logout";
+import toast from "react-hot-toast";
+import Spinner from "../components/ui/Spinner";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -21,7 +23,9 @@ export default function AdminDashboard() {
       const res = await getAllUsers();
       setUsers(res.data.results);
     } catch (err) {
-      console.error(err);
+        toast.error("Failed to load users. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

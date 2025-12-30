@@ -1,5 +1,8 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Input from "../components/ui/Input";
+import Button from "../components/ui/Button";
+import toast from "react-hot-toast";
 import API from "../services/API";
 import GlassCard from "../components/GlassCard.jsx";
 
@@ -10,15 +13,35 @@ export default function Login() {
         email: "",
         password: ""
     });
-    const [error, setError] = useState();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+
     const handleChange = (e) => {
         setform({ ...form, [e.target.name]: e.target.value });
     };
+
+    const validate = () => {
+        const err = {};
+        if (!form.email) {
+            err.email = "Email is required";
+        }
+        if (!form.password) {
+            err.password = "Password is required";
+        }
+        return err; 
+    };
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
+        const err = validate();
+        if (Object.keys(err).length){
+            setError("Email and Password are required.");
+            return;
+        }
 
         try{
+
+            setLoading(true);
+
             const res = await API.post("/auth/login/",{
                 email: form.email,
                 password: form.password
@@ -29,6 +52,8 @@ export default function Login() {
             localStorage.setItem("role", res.data.role);
             localStorage.setItem("email", res.data.email);
 
+            toast.success("Login successful!");
+
             // redirect based on role
             if (res.data.role === "admin") {
                 navigate("/admin");
@@ -36,7 +61,10 @@ export default function Login() {
                 navigate("/dashboard");
             }
         } catch(err) {
-          setError("Invalid credentials. Please try again.");
+            const message = err.response?.data?.message || "Login failed. Please try again.";
+            setError(message);
+        } finally {
+            setLoading(false);
         }
     };
 

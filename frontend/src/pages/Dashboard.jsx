@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+import Button from "../components/ui/Button";
+import Spinner from "../components/ui/Spinner";
 import GlassCard from "../components/GlassCard";
 import { logout } from "../utils/logout";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -15,6 +18,7 @@ export default function Dashboard() {
         const res = await API.get("/auth/me/");
         setUser(res.data);
     } catch (err) {
+        toast.error("Failed to load user data. Please login again.");
         localStorage.clear();
         navigate("/login");
     } finally {

@@ -23,7 +23,11 @@ export default function Signup() {
         setLoading(true);
 
         try {
-            await API.post("/auth/signup/", form);
+            await API.post("/auth/signup/",{
+                full_name: form.full_name,
+                email: form.email,
+                password: form.password
+            });
             navigate("/login");
         } catch (err) {
             setError(err.response?.data?.message || "Signup failed. Please try again.");

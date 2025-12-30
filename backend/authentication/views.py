@@ -11,8 +11,11 @@ from drf_yasg import openapi
 
 class SignupView(APIView):
     permission_classes = [AllowAny]
+    authentication_classes = []
 
     def post(self, request):
+        print("Request data:", request.data)
+
         serializers = SignupSerializer(data = request.data)
         if serializers.is_valid():
             user = serializers.save()
@@ -27,7 +30,8 @@ class SignupView(APIView):
     
 
 class LoginView(APIView):
-    Permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
+    authentication_classes = []
 
     @swagger_auto_schema(request_body=openapi.Schema(
         type=openapi.TYPE_OBJECT,
@@ -40,6 +44,7 @@ class LoginView(APIView):
     )
 
     def post(self, request):
+        print("REQUEST DATA:", request.data)
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
@@ -61,6 +66,8 @@ class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        print("USER:", request.user)
+        print("AUTH:", request.auth)
         serializer = CurrentUserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -68,7 +75,7 @@ class CurrentUserView(APIView):
 class UpdateProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(slef, request):
+    def put(self, request):
         serializer = UpdateProfileSerializer(
             request.user,
             data=request.data,

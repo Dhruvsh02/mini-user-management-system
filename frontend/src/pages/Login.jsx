@@ -18,12 +18,17 @@ export default function Login() {
         setError("");
 
         try{
-            const res = await API.post("/auth/login/", form);
+            const res = await API.post("/auth/login/",{
+                email: form.email,
+                password: form.password
+            });
             // store JWT + role 
-            localStorage.setItem("access", res.data.token);
+            localStorage.setItem("access", res.data.access);
             localStorage.setItem("refresh", res.data.refresh);
             localStorage.setItem("role", res.data.role);
-            
+            localStorage.setItem("email", res.data.email);
+
+            // redirect based on role
             if (res.data.role === "admin") {
                 navigate("/admin");
             } else {

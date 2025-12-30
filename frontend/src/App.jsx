@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 
 export default function App() {
@@ -11,37 +12,37 @@ export default function App() {
 
         Public routes
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/signup" element={<Signup />} /> */}
+        <Route path="/signup" element={<Signup />} />
 
         {/* User routes */}
-        {/* <Route
+        <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
         {/* Admin route */}
-        {/* <Route
+        <Route
           path="/admin"
           element={
             <ProtectedRoute admin>
               <AdminDashboard />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
         {/* Profile */}
-        {/* <Route
+        <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           }
-        /> */}
+        />
       </Routes>
     </BrowserRouter>
   );

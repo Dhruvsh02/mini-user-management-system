@@ -11,6 +11,7 @@ export default function Signup() {
         password: ""
     });
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -69,9 +70,9 @@ export default function Signup() {
             required
             className="w-full px-4 py-3 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
           />
-
+        <div className="relative">
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
             value={form.password}
@@ -79,7 +80,14 @@ export default function Signup() {
             required
             className="w-full px-4 py-3 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-white/50"
           />
-
+          <button 
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-white/70 hover:text-white"
+          >
+            {showPassword ? "Hide Password" : "Show Password"}
+          </button>
+        </div>
           <button
             type="submit"
             disabled={loading}

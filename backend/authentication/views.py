@@ -5,6 +5,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import SignupSerializer, LoginSerializer, CurrentUserSerializer
 from .serializers import UpdateProfileSerializer, ChangePasswordSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class SignupView(APIView):
@@ -26,6 +28,16 @@ class SignupView(APIView):
 
 class LoginView(APIView):
     Permission_classes = [AllowAny]
+
+    @swagger_auto_schema(request_body=openapi.Schema(
+        type=openapi.TYPE_OBJECT,
+        properties={
+            'email': openapi.Schema(type=openapi.TYPE_STRING, description='User email'),
+            'password': openapi.Schema(type=openapi.TYPE_STRING, description='User password'),
+        },
+    ),
+        required=['email', 'password'], 
+    )
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)

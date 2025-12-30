@@ -1,14 +1,14 @@
 import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children, admin = false }) {
+export default function ProtectedRoute({ children, role }) {
     const token = localStorage.getItem("access");
-    const role = localStorage.getItem("role");
+    const userRole = localStorage.getItem("role");
 
     if (!token){
         return <Navigate to="/login" />;
     }
 
-    if (admin && role !== "admin"){
+    if (role && userRole !== role){
         return <Navigate to="/dashboard" />;
     }
 

@@ -83,7 +83,11 @@ export default function Dashboard() {
             >
               Edit Profile
             </button>
-
+            <button onClick={() => navigate("/change-password")}
+              className="w-full py-2 rounded-xl bg-white text-indigo-600 font-semibold hover:bg-opacity-90 transition"
+            >
+              Change Password
+            </button>
             <button
               onClick={handleLogout}
               className="w-full py-2 rounded-xl bg-red-500/80 text-white font-semibold hover:bg-red-600 transition"

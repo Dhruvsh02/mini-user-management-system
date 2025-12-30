@@ -41,14 +41,23 @@ export default function App() {
         />
 
         {/* Profile */}
-        {/* <Route
+        <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
             </ProtectedRoute>
           }
-        /> */}
+        />
+        {/* change password */}
+        <Route
+          path="/change-password"
+          element={
+            <ProtectedRoute>
+              <ChangePassword />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

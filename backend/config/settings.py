@@ -187,3 +187,19 @@ PASSWORD_HASHERS = {
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 }
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django.server": {
+            "handlers": ["console"],
+            "level": "ERROR",
+        },
+    },
+}
+

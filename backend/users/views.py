@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -7,23 +8,41 @@ from .models import User
 from .serializers import AdminUserListSerializer
 from .permissions import IsAdminUserRole
 
-class UserPagination(PageNumberPagination):
+class AdminUserPagination(PageNumberPagination):
     page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 100
 
-class AdminUserListView(APIView):
+
+class AdminUserListView(ListAPIView):
+    serializer_class = AdminUserListSerializer
     permission_classes = [IsAuthenticated, IsAdminUserRole]
+    pagination_class = AdminUserPagination
 
-    def get(self, request):
-        users = User.objects.all().order_by("-created_at")
-        paginator = UserPagination()
-        page = paginator.paginate_queryset(users, request)
-        serializer = AdminUserListSerializer(page, many=True)
-        return paginator.get_paginated_response(serializer.data)
-    
+    def get_queryset(self):
+        # ✅ STABLE ordering (CRITICAL)
+        return User.objects.all().order_by("-id")
+
+    def list(self, request, *args, **kwargs):
+        # ✅ stats request (NO pagination)
+        if request.query_params.get("all") == "true":
+            users = self.get_queryset()
+            serializer = self.get_serializer(users, many=True)
+            return Response(
+                {
+                    "count": users.count(),
+                    "results": serializer.data
+                },
+                status=status.HTTP_200_OK
+            )
+
+        # ✅ normal paginated list
+        return super().list(request, *args, **kwargs)
+  
 class ActivateUserView(APIView):
     permission_classes = [IsAuthenticated, IsAdminUserRole]
 
-    def post(self, request, user_id):
+    def patch(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
             user.is_active = True
@@ -41,7 +60,7 @@ class ActivateUserView(APIView):
 class DeactivateUserView(APIView):
     permission_classes = [IsAuthenticated, IsAdminUserRole]
 
-    def post(self, request, user_id):
+    def patch(self, request, user_id):
         try:
             user = User.objects.get(id=user_id)
             user.is_active = False

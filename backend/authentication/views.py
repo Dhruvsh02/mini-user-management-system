@@ -9,6 +9,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 
 
+
 class SignupView(APIView):
     permission_classes = [AllowAny]
     authentication_classes = []
